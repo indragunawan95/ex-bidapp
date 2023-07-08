@@ -8,5 +8,8 @@ defmodule ExbidappWeb.Router do
   scope "/api", ExbidappWeb do
     pipe_through :api
     get "/health", HealthController, :health
+
+    resources "/users", UserController, except: [:new, :edit]
+    resources "/products", ProductController, except: [:new, :edit]
   end
 end
