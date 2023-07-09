@@ -1,6 +1,7 @@
 defmodule Exbidapp.Products do
   @moduledoc """
   The Products context.
+  This module where all Business Logic related to Product located.
   """
 
   import Ecto.Query, warn: false

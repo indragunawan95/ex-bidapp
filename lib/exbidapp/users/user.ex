@@ -1,4 +1,7 @@
 defmodule Exbidapp.Users.User do
+  @moduledoc """
+    This module is schema for User Entity
+  """
   use Ecto.Schema
   import Ecto.Changeset
 

@@ -1,4 +1,7 @@
 defmodule Exbidapp.Bids.Bid do
+  @moduledoc """
+    This module is schema for Bid Entity
+  """
   use Ecto.Schema
   import Ecto.Changeset
   alias Exbidapp.Products.Product

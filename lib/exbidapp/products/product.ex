@@ -1,4 +1,7 @@
 defmodule Exbidapp.Products.Product do
+  @moduledoc """
+    This module is schema for Product Entity
+  """
   use Ecto.Schema
   import Ecto.Changeset
 

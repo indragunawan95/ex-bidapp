@@ -1,4 +1,7 @@
 defmodule ExbidappWeb.ProductController do
+  @moduledoc """
+    The Product Controller.
+  """
   use ExbidappWeb, :controller
 
   alias Exbidapp.Products
@@ -6,11 +9,17 @@ defmodule ExbidappWeb.ProductController do
 
   action_fallback ExbidappWeb.FallbackController
 
+  @doc """
+    Handler for list of products
+  """
   def index(conn, _params) do
     products = Products.list_products()
     render(conn, :index, products: products)
   end
 
+  @doc """
+    Handler for creating a product
+  """
   def create(conn, %{"product" => product_params}) do
     with {:ok, %Product{} = product} <- Products.create_product(product_params) do
       conn
@@ -20,11 +29,17 @@ defmodule ExbidappWeb.ProductController do
     end
   end
 
+  @doc """
+    Handler for showing a product
+  """
   def show(conn, %{"id" => id}) do
     product = Products.get_product!(id)
     render(conn, :show, product: product)
   end
 
+  @doc """
+    Handler for updating a product
+  """
   def update(conn, %{"id" => id, "product" => product_params}) do
     product = Products.get_product!(id)
 
@@ -33,6 +48,9 @@ defmodule ExbidappWeb.ProductController do
     end
   end
 
+  @doc """
+    Handler for deleting a product
+  """
   def delete(conn, %{"id" => id}) do
     product = Products.get_product!(id)
 

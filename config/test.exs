@@ -11,7 +11,7 @@ config :exbidapp, Exbidapp.Repo,
   hostname: System.get_env("EX_BID_APP_DB_HOST_TEST", "localhost"),
   database:
     System.get_env("EX_BID_APP_DB_DBNAME_TEST", "exbidapp_test") <>
-      System.get_env("MIX_TEST_PARTITION"),
+      System.get_env("MIX_TEST_PARTITION", ""),
   port: System.get_env("EX_BID_APP_DB_PORT_TEST", "5432"),
   pool: Ecto.Adapters.SQL.Sandbox,
   pool_size: 10

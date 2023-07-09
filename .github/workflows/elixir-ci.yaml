@@ -1,0 +1,58 @@
+name: Elixir CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      db:
+        image: postgres:13
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: exbidapp_test
+          POSTGRES_USER: postgres
+        ports:
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+
+    container:
+      image: elixir:latest
+
+    env:
+      MIX_ENV: test
+      EX_BID_APP_DB_USERNAME_TEST: postgres
+      EX_BID_APP_DB_PASSWORD_TEST: postgres
+      EX_BID_APP_DB_HOST_TEST: db
+      EX_BID_APP_DB_DBNAME_TEST: exbidapp_test
+      EX_BID_APP_DB_PORT_TEST: 5432
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Dependencies
+        run: |
+          mix local.hex --force
+          mix local.rebar --force
+          mix deps.get
+
+      - name: Check Code Formatting
+        run: mix format --check-formatted
+
+      - name: Compile Code (Check Warnings)
+        run: mix compile --warnings-as-errors
+
+      - name: Set up Database
+        run: |
+          mix ecto.create
+          mix ecto.migrate
+
+      - name: Run Tests
+        run: mix test
