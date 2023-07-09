@@ -1,6 +1,7 @@
 defmodule Exbidapp.Users do
   @moduledoc """
   The Users context.
+  This module where all Business Logic related to User located.
   """
 
   import Ecto.Query, warn: false

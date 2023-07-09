@@ -1,4 +1,7 @@
 defmodule ExbidappWeb.BidController do
+  @moduledoc """
+    The Bid Controller.
+  """
   use ExbidappWeb, :controller
 
   alias Exbidapp.Bids
@@ -6,11 +9,17 @@ defmodule ExbidappWeb.BidController do
 
   action_fallback ExbidappWeb.FallbackController
 
+  @doc """
+    Handler for list of bids
+  """
   def index(conn, _params) do
     bids = Bids.list_bids()
     render(conn, :index, bids: bids)
   end
 
+  @doc """
+    Handler for creating a bid
+  """
   def create(conn, %{"bid" => bid_params}) do
     with {:ok, %Bid{} = bid} <- Bids.create_bid(bid_params) do
       conn
@@ -20,6 +29,9 @@ defmodule ExbidappWeb.BidController do
     end
   end
 
+  @doc """
+    Handler for showing a bid
+  """
   def show(conn, %{"id" => id}) do
     bid = Bids.get_bid!(id)
     render(conn, :show, bid: bid)

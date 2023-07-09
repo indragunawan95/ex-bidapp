@@ -1,4 +1,7 @@
 defmodule ExbidappWeb.HealthController do
+  @moduledoc """
+    The Health Check Controller.
+  """
   use ExbidappWeb, :controller
 
   def health(conn, _params) do

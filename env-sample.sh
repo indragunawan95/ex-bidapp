@@ -1,6 +1,3 @@
-export MIX_ENV="dev"
-
-
 export EX_BID_APP_DB_USERNAME="postgres"
 export EX_BID_APP_DB_PASSWORD="postgres"
 export EX_BID_APP_DB_HOST="localhost"
