@@ -8,14 +8,16 @@ defmodule Exbidapp.Products.Product do
     field :description, :string
     field :title, :string
     field :start_price, :decimal
+
     belongs_to :owner, User,
       references: :id,
       foreign_key: :owner_id,
-      type: :string
+      type: :id
+
     belongs_to :buyer, User,
       references: :id,
       foreign_key: :buyer_id,
-      type: :string
+      type: :id
 
     timestamps(type: :utc_datetime)
   end

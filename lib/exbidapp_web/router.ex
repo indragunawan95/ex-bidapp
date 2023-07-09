@@ -11,5 +11,6 @@ defmodule ExbidappWeb.Router do
 
     resources "/users", UserController, except: [:new, :edit]
     resources "/products", ProductController, except: [:new, :edit]
+    resources "/bids", BidController, except: [:new, :edit]
   end
 end

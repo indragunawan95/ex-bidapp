@@ -2,14 +2,10 @@ defmodule ExbidappWeb.ProductControllerTest do
   use ExbidappWeb.ConnCase
 
   import Exbidapp.ProductsFixtures
+  import Exbidapp.UsersFixtures
 
   alias Exbidapp.Products.Product
 
-  @create_attrs %{
-    description: "some description",
-    title: "some title",
-    start_price: "120.5"
-  }
   @update_attrs %{
     description: "some updated description",
     title: "some updated title",
@@ -30,7 +26,16 @@ defmodule ExbidappWeb.ProductControllerTest do
 
   describe "create product" do
     test "renders product when data is valid", %{conn: conn} do
-      conn = post(conn, ~p"/api/products", product: @create_attrs)
+      user = user_fixture()
+
+      product = %{
+        description: "some description",
+        title: "some title",
+        start_price: "120.5",
+        owner_id: user.id
+      }
+
+      conn = post(conn, ~p"/api/products", product: product)
       assert %{"id" => id} = json_response(conn, 201)["data"]
 
       conn = get(conn, ~p"/api/products/#{id}")

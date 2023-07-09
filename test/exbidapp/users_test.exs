@@ -34,7 +34,11 @@ defmodule Exbidapp.UsersTest do
 
     test "update_user/2 with valid data updates the user" do
       user = user_fixture()
-      update_attrs = %{username: "some updated username", password_hash: "some updated password_hash"}
+
+      update_attrs = %{
+        username: "some updated username",
+        password_hash: "some updated password_hash"
+      }
 
       assert {:ok, %User{} = user} = Users.update_user(user, update_attrs)
       assert user.username == "some updated username"
