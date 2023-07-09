@@ -2,11 +2,11 @@ import Config
 
 # Configure your database
 config :exbidapp, Exbidapp.Repo,
-  username: System.get_env("EX_BID_APP_DB_USERNAME","postgres"),
-  password: System.get_env("EX_BID_APP_DB_PASSWORD","postgres"),
-  hostname: System.get_env("EX_BID_APP_DB_HOST","localhost"),
-  database: System.get_env("EX_BID_APP_DB_DBNAME","exbidapp_dev"),
-  port: System.get_env("EX_BID_APP_DB_PORT","5432"),
+  username: System.get_env("EX_BID_APP_DB_USERNAME", "postgres"),
+  password: System.get_env("EX_BID_APP_DB_PASSWORD", "postgres"),
+  hostname: System.get_env("EX_BID_APP_DB_HOST", "localhost"),
+  database: System.get_env("EX_BID_APP_DB_DBNAME", "exbidapp_dev"),
+  port: System.get_env("EX_BID_APP_DB_PORT", "5432"),
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10

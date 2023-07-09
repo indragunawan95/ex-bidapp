@@ -7,6 +7,7 @@ defmodule Exbidapp.ProductsTest do
     alias Exbidapp.Products.Product
 
     import Exbidapp.ProductsFixtures
+    import Exbidapp.UsersFixtures
 
     @invalid_attrs %{description: nil, title: nil, start_price: nil}
 
@@ -21,7 +22,14 @@ defmodule Exbidapp.ProductsTest do
     end
 
     test "create_product/1 with valid data creates a product" do
-      valid_attrs = %{description: "some description", title: "some title", start_price: "120.5"}
+      user = user_fixture()
+
+      valid_attrs = %{
+        description: "some description",
+        title: "some title",
+        start_price: "120.5",
+        owner_id: user.id
+      }
 
       assert {:ok, %Product{} = product} = Products.create_product(valid_attrs)
       assert product.description == "some description"
@@ -35,7 +43,12 @@ defmodule Exbidapp.ProductsTest do
 
     test "update_product/2 with valid data updates the product" do
       product = product_fixture()
-      update_attrs = %{description: "some updated description", title: "some updated title", start_price: "456.7"}
+
+      update_attrs = %{
+        description: "some updated description",
+        title: "some updated title",
+        start_price: "456.7"
+      }
 
       assert {:ok, %Product{} = product} = Products.update_product(product, update_attrs)
       assert product.description == "some updated description"
