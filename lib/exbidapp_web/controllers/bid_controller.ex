@@ -6,6 +6,7 @@ defmodule ExbidappWeb.BidController do
 
   alias Exbidapp.Bids
   alias Exbidapp.Bids.Bid
+  # import Ecto.Changeset
 
   action_fallback ExbidappWeb.FallbackController
 
@@ -21,11 +22,22 @@ defmodule ExbidappWeb.BidController do
     Handler for creating a bid
   """
   def create(conn, %{"bid" => bid_params}) do
-    with {:ok, %Bid{} = bid} <- Bids.create_bid(bid_params) do
-      conn
-      |> put_status(:created)
-      |> put_resp_header("location", ~p"/api/bids/#{bid}")
-      |> render(:show, bid: bid)
+    changeset = Bid.changeset(%Bid{}, bid_params)
+
+    case changeset.valid? do
+      true ->
+        with {:ok, %Bid{} = bid} <- Bids.submit_bid(bid_params) do
+          conn
+          |> put_status(:created)
+          |> put_resp_header("location", ~p"/api/bids/#{bid}")
+          |> render(:show, bid: bid)
+        end
+
+      false ->
+        conn
+        |> put_status(:unprocessable_entity)
+        |> put_view(json: ExbidappWeb.ErrorJSON)
+        |> render(:"422")
     end
   end
 

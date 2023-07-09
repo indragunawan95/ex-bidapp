@@ -6,8 +6,11 @@ defmodule Exbidapp.Bids do
 
   import Ecto.Query, warn: false
   alias Exbidapp.Repo
+  alias Ecto.Multi
 
   alias Exbidapp.Bids.Bid
+  alias Exbidapp.Products
+  require Logger
 
   @doc """
   Returns the list of bids.
@@ -101,5 +104,64 @@ defmodule Exbidapp.Bids do
   """
   def change_bid(%Bid{} = bid, attrs \\ %{}) do
     Bid.changeset(bid, attrs)
+  end
+
+  @doc """
+    Get last bid for specific product id
+  """
+  def last_bid(product_id) do
+    from(b in Bid,
+      where: b.product_id == ^product_id,
+      order_by: [desc: :inserted_at]
+    )
+    |> Repo.one()
+  end
+
+  @doc """
+    Logic for submit bid
+  """
+  def submit_bid(attrs \\ %{}) do
+    Multi.new()
+    |> Multi.run(:get_product, fn _, _ ->
+      Products.get_product!(attrs["product_id"])
+      |> case do
+        nil ->
+          {:error, "product is invalid"}
+
+        product ->
+          {:ok, product}
+      end
+    end)
+    |> Multi.run(:validate_price, fn _, %{get_product: product} ->
+      last_bid(product.id)
+      |> case do
+        nil ->
+          {:ok, "first bid"}
+
+        bid ->
+          current_price = Decimal.new(attrs["price"])
+
+          Decimal.compare(bid.price, current_price)
+          |> case do
+            :gt ->
+              {:ok, "validation pass"}
+
+            _ ->
+              {:error, "validation error"}
+          end
+      end
+    end)
+    |> Multi.run(:create_bid, fn _, _ ->
+      create_bid(attrs)
+    end)
+    |> Repo.transaction()
+    |> case do
+      {:ok, %{create_bid: bid}} ->
+        {:ok, bid}
+
+      {:error, steps, message, _} ->
+        Logger.error("submit_bid error at steps: #{steps} #{inspect(message)}")
+        {:error, message}
+    end
   end
 end
