@@ -1,7 +1,7 @@
 defmodule Exbidapp.Bids do
   @moduledoc """
   The Bids context.
-  This module where all Business Logic related to Bid located.
+  This module where all Business Logic related to Bid located. Bid
   """
 
   import Ecto.Query, warn: false
